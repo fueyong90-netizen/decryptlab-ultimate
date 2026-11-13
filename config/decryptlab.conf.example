@@ -1,0 +1,14 @@
+# DecryptLab Ultimate - example config
+[core]
+threads = 2
+max_file_mb = 256
+economy_mode = false
+
+[security]
+mask_secrets = true
+readonly_sources = true
+
+[telegram]
+# token via env DLU_TOKEN
+max_upload_mb = 20
+whitelist =

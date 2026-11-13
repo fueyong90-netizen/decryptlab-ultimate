@@ -1,0 +1,7 @@
+build/
+*.zip
+*.o
+*.a
+.git/
+data/*.db
+logs/*.log

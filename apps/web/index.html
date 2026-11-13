@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>DecryptLab Ultimate</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+</head>
+<body>
+<div class="scanlines" aria-hidden="true"></div>
+
+<header class="topbar">
+  <button id="menuBtn" class="icon-btn" aria-label="Menu">☰</button>
+  <div class="brand"><span class="skull">☠</span> DecryptLab <b>Ultimate</b></div>
+  <div class="mode"><span class="dot"></span> Mode Sécurisé</div>
+</header>
+
+<div class="shell">
+  <nav id="sidebar" class="sidebar">
+    <a data-view="home" class="active">⌂ Accueil</a>
+    <a data-view="analyze">🔍 Analyse</a>
+    <a data-view="vpn">🛡 VPN Intelligence</a>
+    <a data-view="generate">⚙ Générateur</a>
+    <a data-view="audit">🔒 Audit sécurité</a>
+    <a data-view="about">ⓘ À propos</a>
+  </nav>
+
+  <main class="content">
+    <!-- HOME -->
+    <section data-panel="home" class="panel active">
+      <pre class="logo" id="asciiLogo"></pre>
+      <p class="tagline">Plateforme d'analyse, de récupération et de déchiffrement autorisé — <span class="red">by JORDAN HACKER</span></p>
+      <div class="status-pill">⚡ Système prêt • Web/PWA • v1.0.0 • 100% local</div>
+      <div class="cards">
+        <button class="card" data-go="analyze"><span>🔍</span>Analyser un fichier</button>
+        <button class="card" data-go="vpn"><span>🛡</span>Configs VPN</button>
+        <button class="card" data-go="generate"><span>⚙</span>Générer un protocole</button>
+        <button class="card" data-go="audit"><span>🔒</span>Audit de sécurité</button>
+      </div>
+      <p class="note">Tout s'exécute dans votre navigateur. Aucun fichier n'est envoyé à un serveur.</p>
+    </section>
+
+    <!-- ANALYZE -->
+    <section data-panel="analyze" class="panel">
+      <h1>Analyse de fichier</h1>
+      <div class="drop" id="dropZone">
+        <input type="file" id="fileInput" hidden>
+        <p>Glissez un fichier ici ou <button class="link" id="browseBtn">parcourir</button></p>
+        <small>Détection par signature, entropie, hachage SHA-256 — en local</small>
+      </div>
+      <div id="analyzeResult" class="result"></div>
+    </section>
+
+    <!-- VPN -->
+    <section data-panel="vpn" class="panel">
+      <h1>VPN Configuration Intelligence</h1>
+      <p class="sub">Collez une URI (vmess/vless/trojan/ss), un abonnement, une config OpenVPN/WireGuard ou V2Ray JSON.</p>
+      <textarea id="vpnInput" rows="8" placeholder="vless://... ou [Interface] ... ou {&quot;outbounds&quot;:[...]}"></textarea>
+      <div class="row">
+        <button class="btn" id="vpnParseBtn">Analyser</button>
+        <label class="chk"><input type="checkbox" id="revealChk"> Révéler les secrets (vos fichiers uniquement)</label>
+      </div>
+      <div id="vpnResult" class="result"></div>
+    </section>
+
+    <!-- GENERATE -->
+    <section data-panel="generate" class="panel">
+      <h1>Générateur de protocoles</h1>
+      <p class="sub">Génère une configuration/script pour <b>un serveur que vous administrez</b>.</p>
+      <div class="form">
+        <label>Protocole
+          <select id="genProto">
+            <option value="vless">VLESS</option>
+            <option value="vmess">VMess</option>
+            <option value="trojan">Trojan</option>
+            <option value="shadowsocks">Shadowsocks</option>
+            <option value="wireguard">WireGuard</option>
+            <option value="openvpn">OpenVPN</option>
+            <option value="ssh">SSH tunnel</option>
+            <option value="slowdns">SlowDNS</option>
+            <option value="udp">UDP custom</option>
+          </select>
+        </label>
+        <label>Adresse <input id="genAddr" value="my.server.net"></label>
+        <label>Port <input id="genPort" type="number" value="443"></label>
+        <label>Réseau
+          <select id="genNet"><option>ws</option><option>grpc</option><option>tcp</option></select>
+        </label>
+        <label>Sécurité
+          <select id="genSec"><option>tls</option><option>none</option></select>
+        </label>
+        <label>SNI / Host <input id="genSni" placeholder="(défaut = adresse)"></label>
+      </div>
+      <div class="row">
+        <button class="btn" id="genBtn">Générer</button>
+        <button class="btn ghost" id="genCopy">Copier</button>
+        <button class="btn ghost" id="genDownload">Télécharger</button>
+      </div>
+      <pre id="genOutput" class="code"></pre>
+    </section>
+
+    <!-- AUDIT -->
+    <section data-panel="audit" class="panel">
+      <h1>Audit de sécurité VPN</h1>
+      <p class="sub">Repère secrets exposés, TLS faible, ciphers obsolètes. Les secrets restent masqués.</p>
+      <textarea id="auditInput" rows="8" placeholder="Collez une config VPN..."></textarea>
+      <button class="btn" id="auditBtn">Auditer</button>
+      <div id="auditResult" class="result"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section data-panel="about" class="panel">
+      <h1>À propos</h1>
+      <p>DecryptLab Ultimate — plateforme d'intelligence sur les fichiers, d'analyse cryptographique et de configurations VPN.</p>
+      <h3>Périmètre honnête</h3>
+      <p>Cet outil <b>détecte et documente</b> les formats propriétaires (.ehi/.hc/.npvs/.hat) mais ne casse pas le chiffrement posé par leur auteur et n'extrait pas de clés/mots de passe de fichiers que vous ne possédez pas. Il distingue toujours : détection, décodage, décompression, extraction, déchiffrement.</p>
+      <h3>Noyau</h3>
+      <p>Le moteur de référence est en C++20 (CLI <code>decryptlab</code>). Cette PWA fournit une analyse locale équivalente pour les formats ouverts et peut, en option, appeler l'API du noyau.</p>
+      <p class="red">by JORDAN HACKER</p>
+    </section>
+  </main>
+</div>
+
+<footer class="bottomnav">
+  <a data-view="home" class="active">⌂</a>
+  <a data-view="analyze">🔍</a>
+  <a data-view="vpn">🛡</a>
+  <a data-view="generate">⚙</a>
+  <a data-view="audit">🔒</a>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

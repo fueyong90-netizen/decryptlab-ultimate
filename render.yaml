@@ -1,0 +1,10 @@
+# Render.com free web service (Docker). Push this repo to GitHub, then:
+# Render Dashboard -> New -> Web Service -> connect repo -> it reads this file.
+services:
+  - type: web
+    name: decryptlab-ultimate
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true
