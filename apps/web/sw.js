@@ -1,7 +1,7 @@
 // DecryptLab Ultimate — service worker (offline-first PWA shell).
-const CACHE = 'dlu-v2';
+const CACHE = 'dlu-v3';
 const ASSETS = [
-  './','./index.html','./styles.css','./app.js',
+  './','./index.html','./styles.css','./app.js','./qr.js','./studio.js',
   './manifest.webmanifest','./icons/icon.svg'
 ];
 self.addEventListener('install', e => {

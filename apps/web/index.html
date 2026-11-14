@@ -33,6 +33,10 @@
     <a data-view="recuperation"><i class="ic ic-recover"></i><span>Récupération</span></a>
     <a data-view="archives"><i class="ic ic-archive"></i><span>Archives</span></a>
     <a data-view="vpn"><i class="ic ic-shield"></i><span>VPN</span></a>
+    <a data-view="studio"><i class="ic ic-plus"></i><span>VPN Studio</span></a>
+    <a data-view="binaire"><i class="ic ic-search"></i><span>Analyse binaire</span></a>
+    <a data-view="crypto"><i class="ic ic-lock"></i><span>Crypto</span></a>
+    <a data-view="comparaison"><i class="ic ic-report"></i><span>Comparaison</span></a>
     <a data-view="outils"><i class="ic ic-tools"></i><span>Outils Avancés</span></a>
     <a data-view="rapports"><i class="ic ic-report"></i><span>Rapports</span></a>
     <a data-view="parametres"><i class="ic ic-gear"></i><span>Paramètres</span></a>
@@ -148,6 +152,98 @@
       <div id="vpnResult" class="result"></div>
     </section>
 
+    <!-- ===== VPN STUDIO ===== -->
+    <section data-panel="studio" class="panel">
+      <h1><i class="ic ic-plus"></i> VPN Studio</h1>
+      <p class="sub">Génère des configs <b>complètes et valides</b> pour un serveur que vous administrez : lien, JSON/YAML et QR code.</p>
+      <div class="form">
+        <label>Protocole
+          <select id="stProto">
+            <option value="vless">VLESS</option><option value="vmess">VMess</option>
+            <option value="trojan">Trojan</option><option value="shadowsocks">Shadowsocks</option>
+            <option value="wireguard">WireGuard</option><option value="openvpn">OpenVPN</option>
+            <option value="ssh">SSH tunnel</option><option value="slowdns">SlowDNS</option>
+            <option value="udp">UDP Custom</option>
+          </select>
+        </label>
+        <label>Transport
+          <select id="stNet"><option value="tcp">TCP</option><option value="ws">WebSocket</option>
+            <option value="grpc">gRPC</option><option value="h2">HTTP/2</option></select>
+        </label>
+        <label>Sécurité
+          <select id="stSec"><option value="tls">TLS</option><option value="reality">REALITY</option>
+            <option value="none">none</option></select>
+        </label>
+        <label>Adresse <input id="stAddr" value="my.server.net"></label>
+        <label>Port <input id="stPort" type="number" value="443"></label>
+        <label>SNI / Host <input id="stSni" placeholder="(défaut = adresse)"></label>
+        <label>WS/gRPC path <input id="stPath" value="/dlu"></label>
+        <label>Remark / tag <input id="stTag" value="DLU-Node"></label>
+      </div>
+      <div class="row">
+        <button class="btn" id="stGen">Générer</button>
+        <button class="btn ghost" id="stValidate">Valider</button>
+        <button class="btn ghost" id="stCopyLink">Copier le lien</button>
+        <button class="btn ghost" id="stDownload">Télécharger</button>
+        <select id="stFmt" style="width:auto"><option value="link">Lien</option><option value="json">JSON client</option><option value="yaml">YAML (Clash)</option></select>
+      </div>
+      <div id="stLink" class="result"></div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start">
+        <canvas id="stQR" style="background:#fff;border-radius:10px;margin-top:14px"></canvas>
+        <pre id="stOut" class="code" style="flex:1;min-width:260px"></pre>
+      </div>
+      <div id="stValid" class="result"></div>
+      <p class="note">Les UUID/mots de passe sont générés localement. QR scannable par v2rayNG / NekoBox / Hiddify.</p>
+    </section>
+
+    <!-- ===== ANALYSE BINAIRE ===== -->
+    <section data-panel="binaire" class="panel">
+      <h1><i class="ic ic-search"></i> Analyse binaire</h1>
+      <p class="sub">Hex viewer, extraction de chaînes, entropie, magic bytes — 100% local.</p>
+      <div class="drop" id="binDrop"><input type="file" id="binFile" hidden>
+        <div class="drop-ic">&#128187;</div>
+        <p>Glissez un fichier ou <button class="link" id="binBrowse">parcourir</button></p>
+      </div>
+      <div class="tabs">
+        <button class="tab active" data-btab="hex">Hex</button>
+        <button class="tab" data-btab="str">Chaînes</button>
+        <button class="tab" data-btab="meta">Résumé</button>
+      </div>
+      <pre id="binHex" class="code btabpanel active" data-btab-panel="hex"></pre>
+      <pre id="binStr" class="code btabpanel" data-btab-panel="str"></pre>
+      <div id="binMeta" class="result btabpanel" data-btab-panel="meta"></div>
+    </section>
+
+    <!-- ===== CRYPTO ===== -->
+    <section data-panel="crypto" class="panel">
+      <h1><i class="ic ic-lock"></i> Crypto Intelligence</h1>
+      <p class="sub">Détection d'encodage/algos et déchiffrement <b>avec VOTRE clé</b> (AES-GCM / AES-CBC). Aucune devinette de clé.</p>
+      <textarea id="cryIn" rows="5" placeholder="Données (Base64 ou hex)..."></textarea>
+      <div class="form">
+        <label>Opération
+          <select id="cryOp"><option value="detect">Détecter / décoder</option>
+            <option value="aesgcm">AES-GCM déchiffrer</option><option value="aescbc">AES-CBC déchiffrer</option></select>
+        </label>
+        <label>Clé (base64 ou hex) <input id="cryKey" placeholder="votre clé 16/32 octets"></label>
+        <label>IV / Nonce (base64 ou hex) <input id="cryIv" placeholder="12 o (GCM) / 16 o (CBC)"></label>
+        <label>Entrée <select id="cryEnc"><option value="b64">Base64</option><option value="hex">Hex</option></select></label>
+      </div>
+      <button class="btn" id="cryBtn">Exécuter</button>
+      <div id="cryResult" class="result"></div>
+    </section>
+
+    <!-- ===== COMPARAISON ===== -->
+    <section data-panel="comparaison" class="panel">
+      <h1><i class="ic ic-report"></i> Comparaison de configs</h1>
+      <p class="sub">Compare deux configurations VPN (identifiants, hôtes, ports, protocoles, paramètres).</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <textarea id="cmpA" rows="8" placeholder="Config A..."></textarea>
+        <textarea id="cmpB" rows="8" placeholder="Config B..."></textarea>
+      </div>
+      <button class="btn" id="cmpBtn">Comparer</button>
+      <div id="cmpResult" class="result"></div>
+    </section>
+
     <!-- ===== OUTILS AVANCÉS ===== -->
     <section data-panel="outils" class="panel">
       <h1><i class="ic ic-tools"></i> Outils avancés</h1>
@@ -255,6 +351,8 @@
   <a data-view="outils"><i class="ic ic-tools"></i></a>
 </footer>
 
+<script src="qr.js"></script>
 <script src="app.js"></script>
+<script src="studio.js"></script>
 </body>
 </html>
